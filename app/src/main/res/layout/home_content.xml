@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <!--<Button-->
@@ -8,10 +11,16 @@
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:text="Main_APP"/>-->
+
+
     <Button
         android:id="@+id/face_collect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#000"
+        android:textColor="#fff"
+        android:textSize="20sp"
         android:text="疲劳驾驶检测"/>
     <!--<Button-->
         <!--android:id="@+id/face_detect_test_btn"-->
@@ -29,6 +38,10 @@
         android:id="@+id/debug_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#000"
+        android:textColor="#fff"
+        android:textSize="20sp"
         android:text="疲劳记录查看"/>
 
 </LinearLayout>
