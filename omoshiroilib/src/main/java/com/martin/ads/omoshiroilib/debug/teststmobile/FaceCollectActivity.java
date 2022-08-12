@@ -1,8 +1,9 @@
 package com.martin.ads.omoshiroilib.debug.teststmobile;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.PointF;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -10,22 +11,23 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-
 import com.martin.ads.omoshiroilib.R;
 import com.sensetime.stmobileapi.STMobile106;
+
+import java.util.Calendar;
 
 /**
  * Created by zhangyaqiang on 2017/6/27.
  */
 
-public class FaceCollectActivity extends Activity{
+public class FaceCollectActivity extends Activity {
     static FaceCollectActivity instance = null;
 
     private SoundPool soundPool;
     private static int musicId, streamId;
     private static final int FPS = 30;
     private static final int DETECTION_FRAMES = 90;
-    private static double normalYaw,normalPitch;
+    private static double normalYaw, normalPitch;
     private static boolean FACE_COLLECTED = false;
     private static boolean IS_FATIGUE = false;
     //采集1秒的人脸特征
@@ -39,17 +41,36 @@ public class FaceCollectActivity extends Activity{
 
     static Accelerometer acc;
 
+
+    //记录疲劳驾驶的次数
+    int fatiguePerWeekCount = 0;
+
+    //引入sqlite数据库
+    SQLiteDatabase db;
+
+    int week;
+
+    //用于显示当前周疲劳次数
+    int curWeekTimes = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //隐藏标题栏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //设置全屏
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        //设置全屏显示
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        //去掉标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //设置布局
         setContentView(R.layout.activity_facecollect);
-        newfpstText = (TextView)findViewById(R.id.newfpstext);
+        //获取控件
+        newfpstText = (TextView) findViewById(R.id.newfpstext);
         newactionText = (TextView) findViewById(R.id.newactionText);
+        //初始化加速度计
         newfpstText.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -65,13 +86,31 @@ public class FaceCollectActivity extends Activity{
                 }
         );
         instance = this;
-
         soundPool = new SoundPool(5, 0, 5);
         musicId = soundPool.load(this, R.raw.collide, 1);
-
         acc = new Accelerometer(this);
         acc.start();
-
+        //初始化数据库
+        db = openOrCreateDatabase("fatigue.db", MODE_PRIVATE, null);
+        db.execSQL("create table if not exists fatigue (id integer primary key autoincrement, week integer, times integer)");
+        //获取当前周数
+        week = getWeek();
+        //获取当前周疲劳次数
+        curWeekTimes = getCurWeekTimes();
+    }
+//查询当前周疲劳次数
+    private int getCurWeekTimes() {
+        Cursor cursor = db.rawQuery("select * from fatigue where week = ?", new String[]{String.valueOf(week)});
+        if (cursor.moveToFirst()) {
+            curWeekTimes = cursor.getInt(cursor.getColumnIndex("times"));
+        }else {
+            curWeekTimes = 0;
+        }
+        return curWeekTimes;
+    }
+    private int getWeek() {
+        Calendar cal = Calendar.getInstance();
+        return cal.get(Calendar.WEEK_OF_YEAR);
     }
 
     @Override
@@ -79,43 +118,44 @@ public class FaceCollectActivity extends Activity{
         FACE_COLLECTED = false;
         IS_FATIGUE = false;
         super.onResume();
+        //开始采集人脸特征
         final FaceOverlapFragment fragment = (FaceOverlapFragment) getFragmentManager()
                 .findFragmentById(R.id.newoverlapFragment);
         fragment.registTrackCallback(new FaceOverlapFragment.TrackCallBack() {
-            int frameNum=0;
+            int frameNum = 0;
+
             @Override
             public void onTrackdetected(final int value, final float pitch, final float roll, final float yaw, final int eye_dist,
                                         final int id, final int eyeBlink, final int mouthAh, final int headYaw, final int headPitch, final int browJump, final STMobile106 Landmarks) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        newactionText.setText("pitch："+ pitch + "\nroll："+ roll + "\nyaw:" + yaw);
+                        newactionText.setText("pitch：" + pitch + "\nroll：" + roll + "\nyaw:" + yaw);
                     }
                 });
 //              脸部特征未采集
-                if(!FACE_COLLECTED){
+                if (!FACE_COLLECTED) {
                     if (frameNum < FPS) {
                         faceLandmarks[frameNum] = Landmarks;
                         frameNum++;
                         normalYaw += yaw;
                         normalPitch += pitch;
-                    }
-                    else {
+                    } else {
                         getFaceFeature();
                         FACE_COLLECTED = true;
                         frameNum = 0;
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                newfpstText.setText("采集完成");
+                                newfpstText.setText("采集完成，本周疲劳驾驶次数：" + curWeekTimes);
 //                                newactionText.setText("上下眼平均距离："+eyeDistance + "\n上下唇平均距离："+lipDistance);
                             }
                         });
                     }
                 }
 //                实时疲劳检测
-                else{
-                    if (frameNum < DETECTION_FRAMES){
+                else {
+                    if (frameNum < DETECTION_FRAMES) {
                         faceLandmarksPer3s[frameNum] = Landmarks;
                         yawPer3s += yaw;
                         pitchPer3s += pitch;
@@ -127,20 +167,19 @@ public class FaceCollectActivity extends Activity{
 //                                newactionText.setText("上下眼平均距离："+ ((tempFace[72].x - tempFace[73].x)+(tempFace[75].x - tempFace[76].x))/2+ "\n上下唇平均距离："+ ((tempFace[86].x - tempFace[94].x)+(tempFace[87].x - tempFace[93].x)+(tempFace[88].x - tempFace[92].x))/3);
                             }
                         });
-                    }
-                    else{
+                    } else {
                         IS_FATIGUE = isFatigue();
-                        if(IS_FATIGUE) {
+                        if (IS_FATIGUE) {
                             streamId = soundPool.play(musicId, 1, 1, 0, -1, 1);
-//                            dialog();
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    newfpstText.setText("处于疲劳状态，请停车休息！\n点击停止响铃");
+                                    //记录疲劳驾驶的次数
+                                    fatiguePerWeekCount++;
+                                    newfpstText.setText("处于疲劳状态，请停车休息！本周疲劳次数增加\n点击停止响铃");
                                 }
                             });
-                        }
-                        else{
+                        } else {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -157,57 +196,60 @@ public class FaceCollectActivity extends Activity{
             }
         });
     }
-
-//    疲劳警告
-    protected void dialog() {
-        final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-        builder.setTitle("疲劳警告！");
-        builder.setMessage("您已处于疲劳状态，请尽快休息！");
-//        builder.setNegativeButton("取消", null);
-        builder.setNegativeButton("知道了", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                soundPool.stop(musicId);
-                dialog.dismiss();
-            }
-        });
-        builder.show();
+//    疲劳次数记录
+    private void recordFatigue() {
+//        查询当前周次是否存在记录
+        Cursor cursor = db.rawQuery("select * from fatigue where week = ?", new String[]{String.valueOf(week)});
+        if (cursor.moveToNext()) {
+            //存在记录，更新记录
+            db.execSQL("update fatigue set times = ? where week = ?", new String[]{String.valueOf(fatiguePerWeekCount), String.valueOf(week)});
+        } else {
+            //不存在记录，插入记录
+            db.execSQL("insert into fatigue (week, times) values (?, ?)", new String[]{String.valueOf(week), String.valueOf(fatiguePerWeekCount)});
+        }
     }
-// 判断是否处于疲劳状态
+    // 判断是否处于疲劳状态
     private boolean isFatigue() {
         int eyeCloseFrames = 0;
         int lipOpenFrames = 0;
-        for(int i = 0; i< DETECTION_FRAMES; i++) {
+        // 判断是否处于疲劳状态
+        for (int i = 0; i < DETECTION_FRAMES; i++) {
             PointF[] tempFace = faceLandmarksPer3s[i].getPointsArray();
-            double curEyeDistance = ((tempFace[72].x - tempFace[73].x)+(tempFace[75].x - tempFace[76].x))/2;
-            double curLipDistance = ((tempFace[86].x - tempFace[94].x)+(tempFace[87].x - tempFace[93].x)+(tempFace[88].x - tempFace[92].x))/3;
-            if(curEyeDistance < 0.7*eyeDistance) {
+            double curEyeDistance = ((tempFace[72].x - tempFace[73].x) + (tempFace[75].x - tempFace[76].x)) / 2;
+            double curLipDistance = ((tempFace[86].x - tempFace[94].x) + (tempFace[87].x - tempFace[93].x) + (tempFace[88].x - tempFace[92].x)) / 3;
+            if (curEyeDistance < 0.7 * eyeDistance) {
                 eyeCloseFrames++;
             }
-            if(curLipDistance > 1.5*lipDistance) {
+            if (curLipDistance > 1.5 * lipDistance) {
                 lipOpenFrames++;
             }
         }
-        double yawAver = yawPer3s/DETECTION_FRAMES;
-        double pitchAver = pitchPer3s/DETECTION_FRAMES;
-        if(eyeCloseFrames >= 0.25*DETECTION_FRAMES || lipOpenFrames >= 0.3*DETECTION_FRAMES ||
-                pitchAver >= normalPitch+10 || Math.abs(yawAver) >= normalYaw+20){
+        double yawAver = yawPer3s / DETECTION_FRAMES;
+        double pitchAver = pitchPer3s / DETECTION_FRAMES;
+        if (eyeCloseFrames >= 0.25 * DETECTION_FRAMES || lipOpenFrames >= 0.3 * DETECTION_FRAMES ||
+                pitchAver >= normalPitch + 10 || Math.abs(yawAver) >= normalYaw + 20) {
             return true;
-        }
-        else return false;
+        } else return false;
     }
 
-//    获取脸部特征
+    //    获取脸部特征
     private void getFaceFeature() {
-        double eyeSumDistance=0, lipSumDistance=0;
-        for(int i = 0; i< FPS; i++) {
+        double eyeSumDistance = 0, lipSumDistance = 0;
+        for (int i = 0; i < FPS; i++) {
             PointF[] tempFace = faceLandmarks[i].getPointsArray();
-            eyeSumDistance += ((tempFace[72].x - tempFace[73].x)+(tempFace[75].x - tempFace[76].x))/2;
-            lipSumDistance += ((tempFace[86].x - tempFace[94].x)+(tempFace[87].x - tempFace[93].x)+(tempFace[88].x - tempFace[92].x))/3;
+            eyeSumDistance += ((tempFace[72].x - tempFace[73].x) + (tempFace[75].x - tempFace[76].x)) / 2;
+            lipSumDistance += ((tempFace[86].x - tempFace[94].x) + (tempFace[87].x - tempFace[93].x) + (tempFace[88].x - tempFace[92].x)) / 3;
         }
-        eyeDistance = eyeSumDistance/ FPS;
-        lipDistance = lipSumDistance/ FPS;
-        normalPitch = normalPitch/ FPS;
-        normalYaw = normalYaw/ FPS;
+        eyeDistance = eyeSumDistance / FPS;
+        lipDistance = lipSumDistance / FPS;
+        normalPitch = normalPitch / FPS;
+        normalYaw = normalYaw / FPS;
+    }
+    //退出前将疲劳次数记录到数据库
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        recordFatigue();
+        db.close();
     }
 }

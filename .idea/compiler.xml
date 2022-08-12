@@ -5,6 +5,9 @@
       <module name="Fatigue-Detection-master.app" target="1.8" />
       <module name="Fatigue-Detection-master.omoshiroilib" target="1.8" />
       <module name="Fatigue-Detection-master.stmobile" target="1.8" />
+      <module name="fm.app" target="1.8" />
+      <module name="fm.omoshiroilib" target="1.8" />
+      <module name="fm.stmobile" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
