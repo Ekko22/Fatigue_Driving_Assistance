@@ -170,12 +170,12 @@ public class FaceCollectActivity extends Activity {
                     } else {
                         IS_FATIGUE = isFatigue();
                         if (IS_FATIGUE) {
-                            streamId = soundPool.play(musicId, 1, 1, 0, -1, 1);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     //记录疲劳驾驶的次数
                                     fatiguePerWeekCount++;
+                                    streamId = soundPool.play(musicId, 1, 1, 0, 1, 1);
                                     newfpstText.setText("处于疲劳状态，请停车休息！本周疲劳次数增加\n点击停止响铃");
                                 }
                             });
@@ -248,7 +248,9 @@ public class FaceCollectActivity extends Activity {
     //退出前将疲劳次数记录到数据库
     @Override
     protected void onDestroy() {
+        soundPool.stop(streamId);
         super.onDestroy();
+        //停止播放音频
         recordFatigue();
         db.close();
     }

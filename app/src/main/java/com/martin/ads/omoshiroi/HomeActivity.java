@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.martin.ads.omoshiroilib.debug.lab.DisplayFatigueTimes;
 import com.martin.ads.omoshiroilib.debug.lab.FilterThumbActivity;
 import com.martin.ads.omoshiroilib.debug.teststmobile.FaceCollectActivity;
 import com.martin.ads.omoshiroilib.ui.CameraPreviewActivity;
@@ -69,7 +70,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 intent.setClass(HomeActivity.this, FaceCollectActivity.class);
                 break;
             case R.id.debug_btn:
-                intent.setClass(HomeActivity.this, FilterThumbActivity.class);
+                intent.setClass(HomeActivity.this, DisplayFatigueTimes.class);
                 break;
 //            case R.id.test_faceu_btn:
 //                intent.setClass(HomeActivity.this, TestFaceUActivity.class);

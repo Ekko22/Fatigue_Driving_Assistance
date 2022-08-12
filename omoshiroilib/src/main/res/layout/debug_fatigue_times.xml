@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" android:orientation="vertical">
+    <TextView
+            android:text="TextView"
+            android:textSize="@android:dimen/notification_large_icon_height"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/sleep_times"/>
+
+    <Button
+            android:id="@+id/clear_button"
+            android:text="清除历史记录"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+</LinearLayout>

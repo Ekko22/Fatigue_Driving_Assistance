@@ -12,21 +12,21 @@
                 android:id="@+id/set_thumb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="近一月疲劳次数"/>
+                android:text="近年疲劳次数"/>
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/current_filter_text"/>
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/test_image"/>
     <Button
             android:id="@+id/generate_thumb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="最近一次疲劳时间"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/test_image"/>
 
 </LinearLayout>

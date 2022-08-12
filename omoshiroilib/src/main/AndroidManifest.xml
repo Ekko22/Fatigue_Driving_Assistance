@@ -10,6 +10,7 @@
         <activity android:name=".debug.lab.FilterThumbActivity"/>
         <activity android:name=".debug.teststmobile.MultitrackerActivity"/>
         <activity android:name=".debug.teststmobile.FaceCollectActivity"/>
+        <activity android:name=".debug.lab.DisplayFatigueTimes"/>
         <activity
             android:name="com.martin.ads.testfaceu.faceu.ui.TestFaceUActivity"
             android:label="@string/app_name"

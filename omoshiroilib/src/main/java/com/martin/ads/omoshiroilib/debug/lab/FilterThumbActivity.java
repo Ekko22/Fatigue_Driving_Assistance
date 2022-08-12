@@ -24,12 +24,16 @@ public class FilterThumbActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //设置布局
         setContentView(R.layout.debug_filter_thumb);
+        //获取控件
 
         findViewById(R.id.generate_thumb).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //生成缩略图
                 FilterResourceHelper.logAllFilters();
+                //跳转到下一个界面
                 FilterResourceHelper.generateFilterThumbs(FilterThumbActivity.this,false);
             }
         });
