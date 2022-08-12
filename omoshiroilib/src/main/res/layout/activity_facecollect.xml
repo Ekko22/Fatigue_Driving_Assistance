@@ -9,10 +9,10 @@
         android:id="@+id/framelayout"
         >
         <fragment
-            android:id="@+id/newoverlapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            class="com.martin.ads.omoshiroilib.debug.teststmobile.FaceOverlapFragment" >
+                android:id="@+id/newoverlapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                class="com.martin.ads.omoshiroilib.debug.teststmobile.FaceOverlapFragment">
         </fragment>
     </com.martin.ads.omoshiroilib.debug.teststmobile.FixedAspectRatioFrameLayout>
 

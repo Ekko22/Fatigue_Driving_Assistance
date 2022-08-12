@@ -16,9 +16,7 @@ import com.sensetime.stmobileapi.STMobile106;
 
 import java.util.Calendar;
 
-/**
- * Created by zhangyaqiang on 2017/6/27.
- */
+
 
 public class FaceCollectActivity extends Activity {
     static FaceCollectActivity instance = null;
@@ -79,7 +77,8 @@ public class FaceCollectActivity extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                newfpstText.setText("小心驾驶！");
+                                newfpstText.setText("采集完成，本周疲劳驾驶次数：" + curWeekTimes);
+                                newactionText.setText("上下眼平均距离："+eyeDistance + "\n上下唇平均距离："+lipDistance);
                             }
                         });
                     }
@@ -130,7 +129,19 @@ public class FaceCollectActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        newactionText.setText("pitch：" + pitch + "\nroll：" + roll + "\nyaw:" + yaw);
+
+                        //计算眼之间的距离
+                        if (frameNum == 0) {
+                            eyeDistance = eye_dist;
+                        } else {
+                            eyeDistance = eye_dist - eyeDistance;
+                        }
+                        //计算嘴之间的距离
+                        if (frameNum == 0) {
+                            lipDistance = eye_dist;
+                        } else {
+                            lipDistance = eye_dist - lipDistance;
+                        }
                     }
                 });
 //              脸部特征未采集
@@ -148,7 +159,7 @@ public class FaceCollectActivity extends Activity {
                             @Override
                             public void run() {
                                 newfpstText.setText("采集完成，本周疲劳驾驶次数：" + curWeekTimes);
-//                                newactionText.setText("上下眼平均距离："+eyeDistance + "\n上下唇平均距离："+lipDistance);
+                                newactionText.setText("上下眼平均距离："+eyeDistance + "\n上下唇平均距离："+lipDistance);
                             }
                         });
                     }
@@ -156,15 +167,19 @@ public class FaceCollectActivity extends Activity {
 //                实时疲劳检测
                 else {
                     if (frameNum < DETECTION_FRAMES) {
+                        //记录3s内的人脸特征点
                         faceLandmarksPer3s[frameNum] = Landmarks;
+                        //记录3s内的人脸yaw角度
                         yawPer3s += yaw;
+                        //记录3s内的人脸pitch角度
                         pitchPer3s += pitch;
+                        //记录3s内的人脸roll角度
                         frameNum++;
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 PointF[] tempFace = Landmarks.getPointsArray();
-//                                newactionText.setText("上下眼平均距离："+ ((tempFace[72].x - tempFace[73].x)+(tempFace[75].x - tempFace[76].x))/2+ "\n上下唇平均距离："+ ((tempFace[86].x - tempFace[94].x)+(tempFace[87].x - tempFace[93].x)+(tempFace[88].x - tempFace[92].x))/3);
+                                newactionText.setText("上下眼平均距离：\n"+ (int)((tempFace[72].x - tempFace[73].x)+(tempFace[75].x - tempFace[76].x))/2+ "\n上下唇平均距离：\n"+ (int)((tempFace[86].x - tempFace[94].x)+(tempFace[87].x - tempFace[93].x)+(tempFace[88].x - tempFace[92].x))/3);
                             }
                         });
                     } else {
@@ -176,7 +191,7 @@ public class FaceCollectActivity extends Activity {
                                     //记录疲劳驾驶的次数
                                     fatiguePerWeekCount++;
                                     streamId = soundPool.play(musicId, 1, 1, 0, 1, 1);
-                                    newfpstText.setText("处于疲劳状态，请停车休息！本周疲劳次数增加\n点击停止响铃");
+                                    newfpstText.setText("处于疲劳状态！\n本周疲劳次数增加\n点击停止响铃");
                                 }
                             });
                         } else {
@@ -217,10 +232,10 @@ public class FaceCollectActivity extends Activity {
             PointF[] tempFace = faceLandmarksPer3s[i].getPointsArray();
             double curEyeDistance = ((tempFace[72].x - tempFace[73].x) + (tempFace[75].x - tempFace[76].x)) / 2;
             double curLipDistance = ((tempFace[86].x - tempFace[94].x) + (tempFace[87].x - tempFace[93].x) + (tempFace[88].x - tempFace[92].x)) / 3;
-            if (curEyeDistance < 0.7 * eyeDistance) {
+            if (curEyeDistance < 0.6 * eyeDistance) {
                 eyeCloseFrames++;
             }
-            if (curLipDistance > 1.5 * lipDistance) {
+            if (curLipDistance > 1.7 * lipDistance) {
                 lipOpenFrames++;
             }
         }
@@ -245,10 +260,18 @@ public class FaceCollectActivity extends Activity {
         normalPitch = normalPitch / FPS;
         normalYaw = normalYaw / FPS;
     }
+    //熄屏状态或后台状态下退出soundpool
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (soundPool != null) {
+            soundPool.release();
+            soundPool = null;
+        }
+    }
     //退出前将疲劳次数记录到数据库
     @Override
     protected void onDestroy() {
-        soundPool.stop(streamId);
         super.onDestroy();
         //停止播放音频
         recordFatigue();

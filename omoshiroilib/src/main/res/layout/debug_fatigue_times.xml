@@ -5,7 +5,8 @@
               android:layout_height="match_parent" android:orientation="vertical">
     <TextView
             android:text="TextView"
-            android:textSize="@android:dimen/notification_large_icon_height"
+            android:textSize="50dp"
+            android:textColor="@color/abc_input_method_navigation_guard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/sleep_times"/>
 
