@@ -17,7 +17,7 @@
     <ImageView
             android:src="@drawable/car"
             android:layout_marginTop="18dp"
-            android:layout_width="191dp"
+            android:layout_width="203dp"
             android:layout_height="210dp"/>
 
 

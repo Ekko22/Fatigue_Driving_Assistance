@@ -44,18 +44,23 @@ public class Login extends AppCompatActivity {
                 if (num.getText().toString().equals("") || password.getText().toString().equals("")) {
                     Toast.makeText(Login.this, "输入不能为空,请重新输入", Toast.LENGTH_SHORT).show();
                 }else {
-                    if (userDao.findUser(Integer.parseInt(num.getText().toString())).getPassword().equals(password.getText().toString())) {
-                        Toast.makeText(Login.this, "登录成功，即将进入页面", Toast.LENGTH_SHORT).show();
-                        INFO.ID = Integer.parseInt(num.getText().toString());
-                        name = userDao.findUser(Integer.parseInt(num.getText().toString())).getName();
-                        //打印id及密码
-                        System.out.println(INFO.ID);
-                        System.out.println(userDao.findUser(Integer.parseInt(num.getText().toString())).getPassword());
-                        startActivity(new Intent(Login.this, MainActivity.class));
-                        finish();
-                    } else {
-                        Toast.makeText(Login.this, "登录失败，请检查账号是否有无", Toast.LENGTH_SHORT).show();
+                    //如果报出异常，说明用户不存在
+                    try {
+                        if (userDao.findUser(Integer.parseInt(num.getText().toString())).getPassword().equals(password.getText().toString())) {
+                            Toast.makeText(Login.this, "登录成功，即将进入页面", Toast.LENGTH_SHORT).show();
+                            INFO.ID = Integer.parseInt(num.getText().toString());
+                            name = userDao.findUser(Integer.parseInt(num.getText().toString())).getName();
+                            startActivity(new Intent(Login.this, MainActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(Login.this, "登录失败，请检查账号是否有无", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(Login.this, "用户不存在,正在跳转注册", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(Login.this, Register.class));
                     }
+
+
                 }
             }
         });
