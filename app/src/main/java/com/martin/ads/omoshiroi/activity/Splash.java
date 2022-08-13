@@ -16,6 +16,8 @@ import java.util.TimerTask;
  */
 
 public class Splash extends AppCompatActivity {
+    //设置全屏显示
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +34,7 @@ public class Splash extends AppCompatActivity {
         @Override
         public void run() {
             startActivity(new Intent(Splash.this, Login.class));
+            finish();
         }
     };
 

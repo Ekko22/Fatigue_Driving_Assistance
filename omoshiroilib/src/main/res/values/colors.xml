@@ -47,7 +47,7 @@
     <color name="background_material_light">@color/material_grey_50</color>
     <color name="bar_background">#8d000000</color>
     <color name="bg_activity_title">#ff98ccff</color>
-    <color name="bg_app_color">#ffffffff</color>
+    <color name="bg_app_color">#2c85d8</color>
     <color name="bg_divider">#ffe4e9ed</color>
     <color name="black">#ff000000</color>
     <color name="black_btn_text_color">#ff000000</color>

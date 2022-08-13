@@ -37,4 +37,5 @@ dependencies {
     compile 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.0'
     testCompile 'junit:junit:4.12'
     compile project(':stmobile')
+
 }

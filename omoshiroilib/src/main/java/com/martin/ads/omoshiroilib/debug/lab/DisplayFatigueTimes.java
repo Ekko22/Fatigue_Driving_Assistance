@@ -62,6 +62,7 @@ public class DisplayFatigueTimes extends AppCompatActivity {
             tips.setText("您本周还未进行过疲劳检测！");
         }
         return curWeekTimes;
+
     }
 
     private int getWeek() {

@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fm.iml" filepath="$PROJECT_DIR$/.idea/modules/fm.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/fm.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/fm.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/omoshiroilib/fm.omoshiroilib.iml" filepath="$PROJECT_DIR$/.idea/modules/omoshiroilib/fm.omoshiroilib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/stmobile/fm.stmobile.iml" filepath="$PROJECT_DIR$/.idea/modules/stmobile/fm.stmobile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fdm.iml" filepath="$PROJECT_DIR$/.idea/modules/fdm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/fdm.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/fdm.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/omoshiroilib/fdm.omoshiroilib.iml" filepath="$PROJECT_DIR$/.idea/modules/omoshiroilib/fdm.omoshiroilib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/stmobile/fdm.stmobile.iml" filepath="$PROJECT_DIR$/.idea/modules/stmobile/fdm.stmobile.iml" />
     </modules>
   </component>
 </project>

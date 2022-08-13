@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 
 import com.martin.ads.omoshiroi.R;
+import com.martin.ads.omoshiroi.activity.About;
+import com.martin.ads.omoshiroi.activity.Function;
 import com.martin.ads.omoshiroi.activity.Login;
 import com.martin.ads.omoshiroi.activity.MyInfo;
 
@@ -25,6 +27,8 @@ public class FragmentMine extends Fragment {
     private TextView name;
     private Button loginout;
     private LinearLayout myinfo;
+    private LinearLayout about;
+    private LinearLayout function;
 
     @Nullable
     @Override
@@ -55,11 +59,33 @@ public class FragmentMine extends Fragment {
                 startActivity(new Intent(getActivity(),MyInfo.class));
             }
         });
+
+        //关于我们监听事件
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //跳转到关于我们界面
+                startActivity(new Intent(getActivity(),About.class));
+            }
+        });
+
+        //功能介绍监听事件
+        function.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //跳转到功能介绍界面
+                startActivity(new Intent(getActivity(), Function.class));
+
+            }
+        });
     }
 
     private void initView() {
         loginout = (Button) getActivity().findViewById(R.id.loginout);
         myinfo  = (LinearLayout) getActivity().findViewById(R.id.myinfo);
+        about = (LinearLayout)getActivity().findViewById(R.id.about);
+        function = (LinearLayout)getActivity().findViewById(R.id.function);
         name = (TextView)getActivity().findViewById(R.id.name);
+        name.setText("欢迎您，"+Login.name);
     }
 }
