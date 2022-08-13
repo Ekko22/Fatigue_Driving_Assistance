@@ -55,7 +55,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:src="@mipmap/omoshiroi_logo"
+            android:src="@drawable/car"
             android:layout_marginTop="18dp"
             android:layout_width="70dp"
             android:layout_height="70dp" />

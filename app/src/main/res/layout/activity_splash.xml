@@ -15,10 +15,10 @@
         android:layout_height="wrap_content" />
 
     <ImageView
-        android:src="@mipmap/omoshiroi_logo"
-        android:layout_marginTop="18dp"
-        android:layout_width="140dp"
-        android:layout_height="140dp" />
+            android:src="@drawable/car"
+            android:layout_marginTop="18dp"
+            android:layout_width="191dp"
+            android:layout_height="210dp"/>
 
 
 </LinearLayout>
