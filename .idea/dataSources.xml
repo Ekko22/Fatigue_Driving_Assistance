@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Android SQLite" uuid="021906be-3303-4c6a-9969-fb83de292e45">
+    <data-source source="LOCAL" name="MI_User" uuid="47d2dc0f-cdf4-45b5-9700-26f4e50928d1">
       <driver-ref>sqlite.xerial</driver-ref>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\14501\AppData\Local\JetBrains\IntelliJIdea2022.1\android\databases\SERIAL_NUMBER_VEG0220928021616\com.martin.ads.omoshiroi\internal\user.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\14501\AppData\Local\JetBrains\IntelliJIdea2022.1\android\databases\SERIAL_NUMBER_650618a0\com.martin.ads.omoshiroi\internal\user2.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="Android SQLite" uuid="1d0a7d36-2891-4430-a568-5fc9f32c8771">
+    <data-source source="LOCAL" name="MI_Fatigue123" uuid="e2ccb8c4-6b14-46d3-9f41-781ce0e8e6d2">
       <driver-ref>sqlite.xerial</driver-ref>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\14501\AppData\Local\JetBrains\IntelliJIdea2022.1\android\databases\SERIAL_NUMBER_VEG0220928021616\com.martin.ads.omoshiroi\internal\user2.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\14501\AppData\Local\JetBrains\IntelliJIdea2022.1\android\databases\SERIAL_NUMBER_650618a0\com.martin.ads.omoshiroi\internal\fatigue123.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="Android SQLite" uuid="fdd92997-d9b4-4006-af1c-ad1b549c3fd5">
+    <data-source source="LOCAL" name="Fatigue" uuid="c1fcdc98-6ade-443a-8363-5dd64d32ea3b">
       <driver-ref>sqlite.xerial</driver-ref>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\14501\AppData\Local\JetBrains\IntelliJIdea2022.1\android\databases\SERIAL_NUMBER_VEG0220928021616\com.martin.ads.omoshiroi\internal\user2.db</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="Android SQLite" uuid="78d5341f-2d6b-46f5-9673-9074df97f980">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\14501\AppData\Local\JetBrains\IntelliJIdea2022.1\android\databases\SERIAL_NUMBER_650618a0\com.martin.ads.omoshiroi\internal\usersID.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\14501\AppData\Local\JetBrains\IntelliJIdea2022.1\android\databases\SERIAL_NUMBER_650618a0\com.martin.ads.omoshiroi\internal\fatigue.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
