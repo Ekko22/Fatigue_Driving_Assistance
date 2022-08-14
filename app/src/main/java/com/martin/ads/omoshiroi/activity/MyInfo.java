@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.martin.ads.INFO.INFO;
 import com.martin.ads.omoshiroi.DBServe.Dao.UserDao;
-import com.martin.ads.omoshiroi.DBServe.Domain.User;
 import com.martin.ads.omoshiroi.R;
 
 /**

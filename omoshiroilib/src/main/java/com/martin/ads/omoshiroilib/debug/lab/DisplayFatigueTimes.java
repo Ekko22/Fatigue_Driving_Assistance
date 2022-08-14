@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import com.martin.ads.INFO.INFO;
 import com.martin.ads.omoshiroilib.R;
 
 import java.util.Calendar;
@@ -27,7 +28,7 @@ public class DisplayFatigueTimes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //初始化数据库
         db = openOrCreateDatabase("fatigue.db", MODE_PRIVATE, null);
-        db.execSQL("create table if not exists fatigue (id integer primary key autoincrement, week integer, times integer)");
+        db.execSQL("create table if not exists fatigue"+INFO.ID+" (id integer primary key autoincrement, week integer, times integer)");
         week = getWeek();
         curWeekTimes = getCurWeekTimes();
         instance = this;
@@ -39,10 +40,10 @@ public class DisplayFatigueTimes extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //如果表中有数据，则清空表
-                Cursor cursor = db.rawQuery("select * from fatigue", null);
+                Cursor cursor = db.rawQuery("select * from fatigue"+INFO.ID+"", null);
                 if (cursor.moveToFirst()) {
-                    db.execSQL("delete from fatigue");
-                    db.execSQL("create table if not exists fatigue (id integer primary key autoincrement, week integer, times integer)");
+                    db.execSQL("delete from fatigue"+INFO.ID+"");
+                    db.execSQL("create table if not exists fatigue"+INFO.ID+" (id integer primary key autoincrement, week integer, times integer)");
                     tips.setText("数据已清空");
                 } else {
                     tips.setText("没有数据");
@@ -54,7 +55,7 @@ public class DisplayFatigueTimes extends AppCompatActivity {
 
     //查询当前周疲劳次数
     private int getCurWeekTimes() {
-        Cursor cursor = db.rawQuery("select * from fatigue where week = ?", new String[]{String.valueOf(week)});
+        Cursor cursor = db.rawQuery("select * from fatigue"+INFO.ID+" where week = ?", new String[]{String.valueOf(week)});
         if (cursor.moveToFirst()) {
             curWeekTimes = cursor.getInt(cursor.getColumnIndex("times"));
         } else {

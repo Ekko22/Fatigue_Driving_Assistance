@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import com.martin.ads.INFO.INFO;
 import com.martin.ads.omoshiroilib.R;
 import com.sensetime.stmobileapi.STMobile106;
 
@@ -91,7 +92,7 @@ public class FaceCollectActivity extends Activity {
         acc.start();
         //初始化数据库
         db = openOrCreateDatabase("fatigue.db", MODE_PRIVATE, null);
-        db.execSQL("create table if not exists fatigue (id integer primary key autoincrement, week integer, times integer)");
+        db.execSQL("create table if not exists fatigue"+ INFO.ID+ "(id integer primary key autoincrement, week integer, times integer)");
         //获取当前周数
         week = getWeek();
         //获取当前周疲劳次数
@@ -99,7 +100,7 @@ public class FaceCollectActivity extends Activity {
     }
 //查询当前周疲劳次数
     private int getCurWeekTimes() {
-        Cursor cursor = db.rawQuery("select * from fatigue where week = ?", new String[]{String.valueOf(week)});
+        Cursor cursor = db.rawQuery("select * from fatigue"+INFO.ID+" where week = ?", new String[]{String.valueOf(week)});
         if (cursor.moveToFirst()) {
             curWeekTimes = cursor.getInt(cursor.getColumnIndex("times"));
         }else {
@@ -214,13 +215,13 @@ public class FaceCollectActivity extends Activity {
 //    疲劳次数记录
     private void recordFatigue() {
 //        查询当前周次是否存在记录
-        Cursor cursor = db.rawQuery("select * from fatigue where week = ?", new String[]{String.valueOf(week)});
+        Cursor cursor = db.rawQuery("select * from fatigue"+INFO.ID+" where week = ?", new String[]{String.valueOf(week)});
         if (cursor.moveToNext()) {
             //存在记录，更新记录
-            db.execSQL("update fatigue set times = ? where week = ?", new String[]{String.valueOf(fatiguePerWeekCount), String.valueOf(week)});
+            db.execSQL("update fatigue"+INFO.ID+" set times = ? where week = ?", new String[]{String.valueOf(fatiguePerWeekCount), String.valueOf(week)});
         } else {
             //不存在记录，插入记录
-            db.execSQL("insert into fatigue (week, times) values (?, ?)", new String[]{String.valueOf(week), String.valueOf(fatiguePerWeekCount)});
+            db.execSQL("insert into fatigue"+INFO.ID+" (week, times) values (?, ?)", new String[]{String.valueOf(week), String.valueOf(fatiguePerWeekCount)});
         }
     }
     // 判断是否处于疲劳状态
@@ -232,10 +233,10 @@ public class FaceCollectActivity extends Activity {
             PointF[] tempFace = faceLandmarksPer3s[i].getPointsArray();
             double curEyeDistance = ((tempFace[72].x - tempFace[73].x) + (tempFace[75].x - tempFace[76].x)) / 2;
             double curLipDistance = ((tempFace[86].x - tempFace[94].x) + (tempFace[87].x - tempFace[93].x) + (tempFace[88].x - tempFace[92].x)) / 3;
-            if (curEyeDistance < 0.6 * eyeDistance) {
+            if (curEyeDistance < 0.4 * eyeDistance) {
                 eyeCloseFrames++;
             }
-            if (curLipDistance > 1.7 * lipDistance) {
+            if (curLipDistance > 1.3 * lipDistance) {
                 lipOpenFrames++;
             }
         }
