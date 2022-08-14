@@ -55,15 +55,20 @@ public class DisplayFatigueTimes extends AppCompatActivity {
 
     //查询当前周疲劳次数
     private int getCurWeekTimes() {
-        Cursor cursor = db.rawQuery("select * from fatigue"+INFO.ID+" where week = ?", new String[]{String.valueOf(week)});
-        if (cursor.moveToFirst()) {
-            curWeekTimes = cursor.getInt(cursor.getColumnIndex("times"));
-        } else {
-            curWeekTimes = 0;
-            tips.setText("您本周还未进行过疲劳检测！");
+        try {
+            Cursor cursor = db.rawQuery("select * from fatigue"+INFO.ID+" where week = ?", new String[]{String.valueOf(week)});
+            if (cursor.moveToFirst()) {
+                curWeekTimes = cursor.getInt(cursor.getColumnIndex("times"));
+            } else {
+                curWeekTimes = 0;
+                tips.setText("您本周还未进行过疲劳检测！");
+            }
+            return curWeekTimes;
+        }catch (Exception e){
+            //如果查询失败,给出提示
+            tips.setText("查询失败！");
         }
-        return curWeekTimes;
-
+        return 0;
     }
 
     private int getWeek() {

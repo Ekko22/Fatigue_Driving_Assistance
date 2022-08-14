@@ -70,7 +70,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 intent.setClass(HomeActivity.this, FaceCollectActivity.class);
                 break;
             case R.id.debug_btn:
-                intent.setClass(HomeActivity.this, DisplayFatigueTimes.class);
+                try {
+                    intent.setClass(HomeActivity.this, DisplayFatigueTimes.class);
+                } catch (Exception e) {
+                    Toast.makeText(this, "没有数据请先进行检测", Toast.LENGTH_SHORT).show();
+
+                }
                 break;
 //            case R.id.test_faceu_btn:
 //                intent.setClass(HomeActivity.this, TestFaceUActivity.class);
