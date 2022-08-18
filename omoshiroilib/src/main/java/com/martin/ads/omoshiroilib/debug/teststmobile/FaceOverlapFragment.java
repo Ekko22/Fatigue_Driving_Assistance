@@ -149,7 +149,7 @@ public class FaceOverlapFragment extends CameraOverlapFragment {
 					}
 					fps = timeCounter.size() - start;
 					try {
-						Log.i(TAG, "-->> faceActions: faceActions[0].face="+faceActions[0].face.rect.toString()+", pitch = "+faceActions[0].face.pitch+", roll="+faceActions[0].face.roll+", yaw="
+						Log.i(TAG, "-->> faceActions: faceActions[0].face="+2+", pitch = "+faceActions[0].face.pitch+", roll="+faceActions[0].face.roll+", yaw="
 								+faceActions[0].face.yaw+", face_action = "+faceActions[0].face_action+", face_count = "+faceActions.length);
 //						mListener.onTrackdetected(fps, faces[0].pitch, faces[0].roll, faces[0].yaw);
 //						通过listener获取每一帧的人脸检测结果，最后一个参数faceActions[0].getFace()是通过人脸检测核心所获取的数据,

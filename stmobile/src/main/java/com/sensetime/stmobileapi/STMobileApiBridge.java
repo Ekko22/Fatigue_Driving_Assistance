@@ -13,7 +13,12 @@ import com.sun.jna.ptr.PointerByReference;
 
 public interface STMobileApiBridge extends Library {
     class st_rect_t extends Structure {
-    	
+
+
+        public String toString() {
+            return "st_rect_t(left=" + left + ", top=" + top + ", right=" + right + ", bottom=" + bottom + ")";
+        }
+
         public static class ByValue extends st_rect_t implements Structure.ByValue {
         }
 

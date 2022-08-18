@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.martin.ads.INFO.INFO;
 import com.martin.ads.omoshiroilib.R;
 
@@ -27,8 +28,12 @@ public class DisplayFatigueTimes extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //初始化数据库
-        db = openOrCreateDatabase("fatigue.db", MODE_PRIVATE, null);
-        db.execSQL("create table if not exists fatigue"+INFO.ID+" (id integer primary key autoincrement, week integer, times integer)");
+        try{
+            db = openOrCreateDatabase("fatigue.db", MODE_PRIVATE, null);
+            db.execSQL("create table if not exists fatigue"+INFO.ID+" (id integer primary key autoincrement, week integer, times integer)");
+        }catch (Exception e){
+            Toast.makeText(instance, "还没有数据", Toast.LENGTH_SHORT).show();
+        }
         week = getWeek();
         curWeekTimes = getCurWeekTimes();
         instance = this;

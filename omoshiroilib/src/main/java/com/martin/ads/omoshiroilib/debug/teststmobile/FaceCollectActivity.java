@@ -217,8 +217,10 @@ public class FaceCollectActivity extends Activity {
 //        查询当前周次是否存在记录
         Cursor cursor = db.rawQuery("select * from fatigue"+INFO.ID+" where week = ?", new String[]{String.valueOf(week)});
         if (cursor.moveToNext()) {
-            //存在记录，更新记录
-            db.execSQL("update fatigue"+INFO.ID+" set times = ? where week = ?", new String[]{String.valueOf(fatiguePerWeekCount), String.valueOf(week)});
+            //存在记录，查询当前周次的疲劳次数
+            int times = cursor.getInt(cursor.getColumnIndex("times"));
+            //更新疲劳次数
+            db.execSQL("update fatigue"+INFO.ID+" set times = ? where week = ?", new String[]{String.valueOf(times + fatiguePerWeekCount), String.valueOf(week)});
         } else {
             //不存在记录，插入记录
             db.execSQL("insert into fatigue"+INFO.ID+" (week, times) values (?, ?)", new String[]{String.valueOf(week), String.valueOf(fatiguePerWeekCount)});

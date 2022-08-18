@@ -30,12 +30,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-        //设置全屏显示
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
-                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        //去掉标题栏
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
